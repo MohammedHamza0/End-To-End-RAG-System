@@ -78,6 +78,7 @@ End-To-End-RAG-System/
 │   ├── assets/         # Static assets
 │   ├── controller/     # API route controllers
 │   ├── models/         # Data models and schemas
+│   ├── routers/        # API routers
 │   ├── main.py         # Application entry point
 │   └── .env            # Environment variables
 ├── requirements.txt    # Python dependencies
