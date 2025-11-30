@@ -1,4 +1,5 @@
 fastapi==0.110.2 # Web FrameWork
 uvicorn==0.29.0 # Server to run fastapi 
 python-multipart==0.0.9 # For file upload
-
+pydantic-settings==2.2.1 # Settings Management
+aiofiles==23.2.1 # Async file operations

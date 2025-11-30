@@ -68,6 +68,9 @@ pip install -r requirements.txt
     VERSION="1.0.0"
     OPENAI_API_KEY="your_openai_api_key"
     GEMINI_API_KEY="your_gemini_api_key"
+    FILE_ALLOWED_EXTENSIONS=["image/jpeg","image/png","text/plain","application/pdf"]
+    FILE_MAX_SIZE=10485760 # 10 MB
+    FILE_DEFUALT_CHUNK_SIZE=512000 # 500 KB
     ```
 
 ## Project Structure
@@ -94,3 +97,19 @@ uvicorn src.main:app --reload
 ```
 
 The API will be available at `http://localhost:8000`. You can access the interactive API docs at `http://localhost:8000/docs`.
+
+## Features
+
+- **File Upload**: Upload files to specific projects with validation for file type and size.
+- **Project Management**: (In progress) Structure for managing project-specific files.
+
+## API Endpoints
+
+### Base
+- `GET /Base/welcome`: Health check endpoint returning app name and version.
+
+### Data
+- `POST /Data/upload_file/{project_id}`: Upload a file to a specific project.
+    - **Path Parameters**: `project_id` (string)
+    - **Body**: `file` (UploadFile)
+    - **Returns**: JSON response with file details and status.
