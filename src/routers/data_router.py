@@ -22,16 +22,16 @@ async def upload_file(project_id: str,
           if status:
                project_controller = ProjectController(settings)
                # generate unique clean file name
-               new_file_name = data_controller.generate_unique_clean_file_name(file.filename)
+               new_file_name, file_path = data_controller.generate_unique_clean_file_name(project_id=project_id, file_name=file.filename)
                # save the uploaded file under the project id
                file_path = await project_controller.files_save(project_id, file, new_file_name)
                return JSONResponse(
                     content={
                          "message": ResponseEnum.FILE_UPLOADED_SUCCESSFULLY.value, 
                          "file_name": new_file_name,
-                         "file_size": (file.size) / (1024 * 1024) + "MB",
+                         "file_size": "{:.2f} MB".format(file.size / (1024 * 1024)),
                          "file_type": file.content_type,
-                         "file_path": file_path,
+                         "file_path": file_path,  
                          "project_id": project_id,
 
                          }

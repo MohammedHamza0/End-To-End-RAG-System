@@ -1,4 +1,5 @@
 from fastapi import Depends, UploadFile, HTTPException, status
+import os
 import string
 import random
 from fastapi.responses import JSONResponse
@@ -53,8 +54,8 @@ class DataController(BaseController):
           
 
      # Function for generating unique file name
-     def generate_unique_clean_file_name(self, file_name: str, length: int = 12) -> str:
+     def generate_unique_clean_file_name(self, project_id: str ,file_name: str, length: int = 12) -> str:
           generated_prefix_file_name = "".join(random.choices(string.ascii_letters + string.digits, k=length))
           new_unique_file_name = f"{generated_prefix_file_name}_{file_name}"
           new_unique_file_name = new_unique_file_name.replace(" ", "_")
-          return new_unique_file_name
+          return new_unique_file_name, os.path.join(self.files_dir, project_id, new_unique_file_name)
