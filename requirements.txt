@@ -3,3 +3,8 @@ uvicorn==0.29.0 # Server to run fastapi
 python-multipart==0.0.9 # For file upload
 pydantic-settings==2.2.1 # Settings Management
 aiofiles==23.2.1 # Async file operations
+langchain==0.1.20 # For processing data
+langchain_community==0.0.38 # For processing data
+PyMuPDF==1.24.3 # For processing pdf files
+pypdf==6.4.0
+rapidocr-onnxruntime==1.4.4 

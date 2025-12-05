@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends, File, UploadFile, status
+import json
 from fastapi.responses import JSONResponse
 from helpers.config import Settings, get_settings
-from controller import DataController, ProjectController
+from controller import DataController, ProjectController, ProcessController
 from models import ResponseEnum
+from .schemas.data import ProcessRequest
 
 
 # Create instance for data router
 data_router = APIRouter(prefix="/Data", tags=["Data"])
 
-# Function to upload file 
+# EndPoint for uploading file 
 @data_router.post(path="/upload_file/{project_id}", 
                   description="EndPoint for uploading file under a specific project id")
 async def upload_file(project_id: str, 
@@ -37,6 +39,38 @@ async def upload_file(project_id: str,
                          }
                )
           return message
+
+
+
+
+# Endpoint for processing file under a specific project id
+@data_router.post(path="/process/{project_id}", description="EndPoint for processing file under a specific project id")
+async def process_file(project_id: str, process_request: ProcessRequest,
+                       process_controller: ProcessController = Depends(ProcessController)):
+     file_id = process_request.file_id
+     chunk_size = process_request.chunk_size
+     chunk_overlap = process_request.chunk_overlap
+
+     # Extract file content
+     file_content = process_controller.get_file_content(file_id=file_id)
+     if file_content != None:
+          chunks = process_controller.process_file_content(file_content=file_content, 
+                                                            file_id=file_id,
+                                                            chunk_size=chunk_size,
+                                                            overlap_size=chunk_overlap)
+          return JSONResponse(
+               content={
+                    "message": ResponseEnum.FILE_PROCESSED_SUCCESSFULLY.value,
+               },
+               status_code=status.HTTP_200_OK
+          ), chunks
+     
+     return JSONResponse(
+          content={
+               "message": ResponseEnum.FILE_PROCESSED_FAILED.value
+          },
+          status_code=status.HTTP_400_BAD_REQUEST
+     )
 
                
                
